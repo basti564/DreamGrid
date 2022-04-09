@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/linearLayoutMain">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/sidePanel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:layout_marginBottom="40sp"
+                android:dividerHeight="0dp"
+                android:divider="#00000000" />
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingTop="6dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:numColumns="auto_fit"
+            android:columnWidth="101dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:scrollbarStyle="outsideOverlay"
+            android:horizontalSpacing="15dp"
+            android:verticalSpacing="15dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/slide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:text="\u00ab"
+        android:textColor="@android:color/white"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/pi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:text="\u03C0"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"/>
+
+</RelativeLayout>

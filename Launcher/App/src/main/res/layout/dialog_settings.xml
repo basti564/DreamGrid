@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="20dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:text="@string/app_name"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.lvonasek.pilauncher.SettingsGroup
+            android:id="@+id/settings_look"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:icon="@drawable/ic_look"
+            app:text="@string/settings_look"/>
+
+        <com.lvonasek.pilauncher.SettingsGroup
+            android:id="@+id/settings_device"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:icon="@drawable/ic_device"
+            app:text="@string/settings_device"/>
+
+        <com.lvonasek.pilauncher.SettingsGroup
+            android:id="@+id/settings_apps"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:icon="@drawable/ic_editing_on"
+            app:text="@string/settings_apps_enable"/>
+
+
+        <com.lvonasek.pilauncher.SettingsGroup
+            android:id="@+id/settings_intergration"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:icon="@drawable/ic_integration"
+            app:text="@string/settings_intergration"/>
+    </LinearLayout>
+</LinearLayout>

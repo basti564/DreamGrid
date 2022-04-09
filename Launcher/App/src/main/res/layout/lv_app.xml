@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/imageLabel"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/app_name"/>
+
+        <com.lvonasek.pilauncher.TextView
+            android:id="@+id/textLabel"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:shadowColor="#80000000"
+            android:shadowRadius="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:strokeColor="#80000000"
+            app:strokeWidth="1.5dp"/>
+    </LinearLayout>
+</RelativeLayout>

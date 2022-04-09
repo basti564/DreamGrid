@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityFlags="flagDefault|flagRequestFilterKeyEvents|flagIncludeNotImportantViews"
+    android:accessibilityFeedbackType="feedbackAllMask"
+    android:description="@string/start_on_volume"
+    android:notificationTimeout="50"
+    android:settingsActivity=""
+    android:canRequestFilterKeyEvents="true" />

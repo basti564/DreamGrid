@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="20dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:text="@string/settings_look"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/theme0"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:src="@drawable/bkg_default"/>
+
+        <ImageView
+            android:id="@+id/theme1"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:src="@drawable/bkg_glass"/>
+
+        <ImageView
+            android:id="@+id/theme2"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:src="@drawable/bkg_rgb"/>
+
+        <ImageView
+            android:id="@+id/theme3"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:src="@drawable/bkg_skin"/>
+
+        <ImageView
+            android:id="@+id/theme4"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:src="@drawable/bkg_underwater"/>
+
+        <ImageView
+            android:id="@+id/theme_custom"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:src="@drawable/bkg_custom"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/background_opacity"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+        <SeekBar
+            android:id="@+id/bar_opacity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:progressBackgroundTint="@android:color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/icons_size"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+        <SeekBar
+            android:id="@+id/bar_scale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:progressBackgroundTint="@android:color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/show_app_names"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_names"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/checkbox_off_background" />
+    </LinearLayout>
+</LinearLayout>
