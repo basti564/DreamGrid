@@ -1,24 +1,19 @@
 package com.lvonasek.pilauncher;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -42,7 +37,6 @@ public class MainActivity extends Activity
 {
     private static final String CUSTOM_THEME = "theme.png";
     private static final boolean DEFAULT_NAMES = true;
-    private static final int DEFAULT_OPACITY = 7;
     private static final int DEFAULT_SCALE = 2;
     private static final int DEFAULT_THEME = 0;
     public static final int PICK_ICON_CODE = 450;
@@ -87,7 +81,6 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         mSettings = SettingsProvider.getInstance(this);
-        ButtonManager.restoreVolume(this, false);
         instance = this;
 
         // Get UI instances
@@ -155,15 +148,6 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        boolean output = super.onKeyUp(keyCode, event);;
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            ButtonManager.restoreVolume(this, true);
-        }
-        return output;
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_ICON_CODE) {
@@ -210,20 +194,15 @@ public class MainActivity extends Activity
 
         // set customization
         boolean names = mPreferences.getBoolean(SettingsProvider.KEY_CUSTOM_NAMES, DEFAULT_NAMES);
-        int opacity = mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY);
         int theme = mPreferences.getInt(SettingsProvider.KEY_CUSTOM_THEME, DEFAULT_THEME);
         int scale = getPixelFromDip(SCALES[mPreferences.getInt(SettingsProvider.KEY_CUSTOM_SCALE, DEFAULT_SCALE)]);
         mAppGrid.setColumnWidth(scale);
         if (theme < THEMES.length) {
-            Drawable d = getDrawable(THEMES[theme]);
-            d.setAlpha(255 * opacity / 10);
-            mBackground.setImageDrawable(d);
+            mBackground.setImageDrawable(getDrawable(THEMES[theme]));
         } else {
             File file = new File(getApplicationInfo().dataDir, CUSTOM_THEME);
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            Drawable d = new BitmapDrawable(getResources(), bitmap);
-            d.setAlpha(255 * opacity / 10);
-            mBackground.setImageDrawable(d);
+            mBackground.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
         }
 
         // set context
@@ -243,7 +222,6 @@ public class MainActivity extends Activity
             image.setAlpha(255);
         }
         views[index].setBackgroundColor(Color.WHITE);
-        views[index].setAlpha(255 * mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY) / 10);
     }
 
     public Dialog showPopup(int layout) {
@@ -255,7 +233,7 @@ public class MainActivity extends Activity
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = 660;
-        lp.height = 480;
+        lp.height = 330;
         dialog.getWindow().setAttributes(lp);
         dialog.findViewById(R.id.layout).requestLayout();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bkg_dialog);
@@ -286,7 +264,12 @@ public class MainActivity extends Activity
 
         dialog.findViewById(R.id.settings_look).setOnClickListener(view -> showSettingsLook());
         dialog.findViewById(R.id.settings_intergration).setOnClickListener(view -> showSettingsIntegration());
-        dialog.findViewById(R.id.settings_device).setOnClickListener(view -> startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0));
+        dialog.findViewById(R.id.settings_device).setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setPackage("com.android.settings");
+            startActivity(intent);
+        });
     }
 
     private void showSettingsLook() {
@@ -300,26 +283,6 @@ public class MainActivity extends Activity
             editor.commit();
             reloadUI();
         });
-
-        SeekBar opacity = d.findViewById(R.id.bar_opacity);
-        opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putInt(SettingsProvider.KEY_CUSTOM_OPACITY, value);
-                editor.commit();
-                reloadUI();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-        opacity.setProgress(mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY));
-        opacity.setMax(10);
-        opacity.setMin(0);
 
         SeekBar scale = d.findViewById(R.id.bar_scale);
         scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -355,7 +318,6 @@ public class MainActivity extends Activity
             image.setAlpha(255);
         }
         views[theme].setBackgroundColor(Color.WHITE);
-        views[theme].setAlpha(255 * mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY) / 10);
         for (int i = 0; i < views.length; i++) {
             int index = i;
             views[i].setOnClickListener(view12 -> {
@@ -381,29 +343,6 @@ public class MainActivity extends Activity
         d.findViewById(R.id.button_start).setOnClickListener(view -> {
             ButtonManager.isAccesibilityInitialized(this);
             ButtonManager.requestAccessibility(this);
-        });
-
-        CheckBox boot = d.findViewById(R.id.checkbox_boot);
-        boot.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_BOOT, false));
-        boot.setOnCheckedChangeListener((compoundButton, value) -> {
-            String[] permissions = { Manifest.permission.RECEIVE_BOOT_COMPLETED };
-            boolean bootAllowed = checkSelfPermission(permissions[0]) == PackageManager.PERMISSION_GRANTED;
-            boolean overlayAllowed = Settings.canDrawOverlays(getApplicationContext());
-            if ((!bootAllowed || !overlayAllowed) && value) {
-                if (!bootAllowed) {
-                    requestPermissions(permissions, 0);
-                }
-                if (!overlayAllowed) {
-                    Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                    myIntent.setData(Uri.fromParts("package", getPackageName(), null));
-                    startActivityForResult(myIntent, 0);
-                }
-                boot.setChecked(false);
-            } else {
-                SharedPreferences.Editor e = mPreferences.edit();
-                e.putBoolean(SettingsProvider.KEY_BOOT, value);
-                e.commit();
-            }
         });
     }
 

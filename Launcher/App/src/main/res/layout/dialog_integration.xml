@@ -15,28 +15,6 @@
         android:textSize="20sp"
         android:text="@string/settings_intergration"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/start_on_boot"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"/>
-
-        <CheckBox
-            android:id="@+id/checkbox_boot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/checkbox_off_background" />
-    </LinearLayout>
-
     <Button
         android:id="@+id/button_start"
         android:layout_width="match_parent"

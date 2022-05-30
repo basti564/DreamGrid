@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -92,28 +91,13 @@ public class AppsAdapter extends BaseAdapter
 
         if (mEditMode) {
             // short click for app details, long click to activate drag and drop
-            layout.setOnTouchListener((view, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mTempTimestamp = System.currentTimeMillis();
-                    mTempPackage = actApp.packageName;
-                    return true;
-                }
-
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (System.currentTimeMillis() - mTempTimestamp < 500) {
-                        showAppDetails(actApp);
-                    }
-                }
-
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    if (System.currentTimeMillis() - mTempTimestamp > 500) {
-                        ClipData data = ClipData.newPlainText("", "");
-                        View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                        view.startDragAndDrop(data, shadowBuilder, view, 0);
-                        return true;
-                    }
-                }
-                return false;
+            layout.setOnClickListener(view -> showAppDetails(actApp));
+            layout.setOnLongClickListener(view -> {
+                mTempPackage = actApp.packageName;
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                view.startDragAndDrop(data, shadowBuilder, view, 0);
+                return true;
             });
 
             // drag and drop
