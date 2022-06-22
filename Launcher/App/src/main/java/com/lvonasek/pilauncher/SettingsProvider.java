@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -18,6 +17,7 @@ import java.util.Set;
 public class SettingsProvider
 {
     public static final String KEY_CUSTOM_NAMES = "KEY_CUSTOM_NAMES";
+    public static final String KEY_CUSTOM_OPACITY = "KEY_CUSTOM_OPACITY";
     public static final String KEY_CUSTOM_SCALE = "KEY_CUSTOM_SCALE";
     public static final String KEY_CUSTOM_THEME = "KEY_CUSTOM_THEME";
     public static final String KEY_EDITMODE = "KEY_EDITMODE";
@@ -81,6 +81,7 @@ public class SettingsProvider
             {
                 // Check for system app
                 boolean isSystemApp = (installedApplication.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
+                if (pkg.startsWith("com.oculus.browser")) isSystemApp = false;
                 if (pkg.startsWith("com.facebook.arvr")) isSystemApp = true;
                 if (pkg.startsWith("com.meta.environment")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.avatar2")) isSystemApp = true;

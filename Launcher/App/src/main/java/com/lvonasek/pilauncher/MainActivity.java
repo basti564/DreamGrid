@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,6 +38,7 @@ public class MainActivity extends Activity
 {
     private static final String CUSTOM_THEME = "theme.png";
     private static final boolean DEFAULT_NAMES = true;
+    private static final int DEFAULT_OPACITY = 7;
     private static final int DEFAULT_SCALE = 2;
     private static final int DEFAULT_THEME = 0;
     public static final int PICK_ICON_CODE = 450;
@@ -194,15 +196,20 @@ public class MainActivity extends Activity
 
         // set customization
         boolean names = mPreferences.getBoolean(SettingsProvider.KEY_CUSTOM_NAMES, DEFAULT_NAMES);
+        int opacity = mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY);
         int theme = mPreferences.getInt(SettingsProvider.KEY_CUSTOM_THEME, DEFAULT_THEME);
         int scale = getPixelFromDip(SCALES[mPreferences.getInt(SettingsProvider.KEY_CUSTOM_SCALE, DEFAULT_SCALE)]);
         mAppGrid.setColumnWidth(scale);
         if (theme < THEMES.length) {
-            mBackground.setImageDrawable(getDrawable(THEMES[theme]));
+            Drawable d = getDrawable(THEMES[theme]);
+            d.setAlpha(255 * opacity / 10);
+            mBackground.setImageDrawable(d);
         } else {
             File file = new File(getApplicationInfo().dataDir, CUSTOM_THEME);
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            mBackground.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
+            Drawable d = new BitmapDrawable(getResources(), bitmap);
+            d.setAlpha(255 * opacity / 10);
+            mBackground.setImageDrawable(d);
         }
 
         // set context
@@ -222,6 +229,7 @@ public class MainActivity extends Activity
             image.setAlpha(255);
         }
         views[index].setBackgroundColor(Color.WHITE);
+        views[index].setAlpha(255 * mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY) / 10);
     }
 
     public Dialog showPopup(int layout) {
@@ -233,7 +241,7 @@ public class MainActivity extends Activity
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = 660;
-        lp.height = 330;
+        lp.height = 400;
         dialog.getWindow().setAttributes(lp);
         dialog.findViewById(R.id.layout).requestLayout();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bkg_dialog);
@@ -284,6 +292,26 @@ public class MainActivity extends Activity
             reloadUI();
         });
 
+        SeekBar opacity = d.findViewById(R.id.bar_opacity);
+        opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putInt(SettingsProvider.KEY_CUSTOM_OPACITY, value);
+                editor.commit();
+                reloadUI();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        opacity.setProgress(mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY));
+        opacity.setMax(10);
+        opacity.setMin(0);
+
         SeekBar scale = d.findViewById(R.id.bar_scale);
         scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -318,6 +346,7 @@ public class MainActivity extends Activity
             image.setAlpha(255);
         }
         views[theme].setBackgroundColor(Color.WHITE);
+        views[theme].setAlpha(255 * mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY) / 10);
         for (int i = 0; i < views.length; i++) {
             int index = i;
             views[i].setOnClickListener(view12 -> {
