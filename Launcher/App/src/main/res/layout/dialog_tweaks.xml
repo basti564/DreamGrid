@@ -14,38 +14,32 @@
         android:paddingBottom="20dp"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:text="@string/app_name"/>
+        android:text="@string/settings_tweaks"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <com.lvonasek.pilauncher.SettingsGroup
-            android:id="@+id/settings_look"
+            android:id="@+id/service_app_shortcut"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            app:icon="@drawable/ic_look"
-            app:text="@string/settings_look"/>
+            app:icon="@drawable/ic_shortcut"
+            app:text="@string/service_app_shortcut"/>
 
         <com.lvonasek.pilauncher.SettingsGroup
-            android:id="@+id/settings_device"
+            android:id="@+id/service_explore_app"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            app:icon="@drawable/ic_device"
-            app:text="@string/settings_device"/>
+            app:icon="@drawable/ic_explore"
+            app:text="@string/service_explore_app"/>
 
         <com.lvonasek.pilauncher.SettingsGroup
-            android:id="@+id/settings_apps"
+            android:id="@+id/service_os_updater"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            app:icon="@drawable/ic_editing_on"
-            app:text="@string/settings_apps_enable"/>
-
-        <com.lvonasek.pilauncher.SettingsGroup
-            android:id="@+id/settings_tweaks"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            app:icon="@drawable/ic_tweaks"
-            app:text="@string/settings_tweaks"/>
+            app:icon="@drawable/ic_updater"
+            app:text="@string/service_os_updater"/>
     </LinearLayout>
 </LinearLayout>

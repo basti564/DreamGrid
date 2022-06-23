@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -154,11 +153,7 @@ public class AppsAdapter extends BaseAdapter
         dialog.show();
 
         //info action
-        dialog.findViewById(R.id.info).setOnClickListener(view13 -> {
-            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:" + actApp.packageName));
-            mContext.startActivity(intent);
-        });
+        dialog.findViewById(R.id.info).setOnClickListener(view13 -> mContext.openAppDetails(actApp.packageName));
 
         //set name
         PackageManager pm = mContext.getPackageManager();

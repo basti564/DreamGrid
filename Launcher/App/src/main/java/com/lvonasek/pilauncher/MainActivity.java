@@ -271,7 +271,7 @@ public class MainActivity extends Activity
         });
 
         dialog.findViewById(R.id.settings_look).setOnClickListener(view -> showSettingsLook());
-        dialog.findViewById(R.id.settings_intergration).setOnClickListener(view -> showSettingsIntegration());
+        dialog.findViewById(R.id.settings_tweaks).setOnClickListener(view -> showSettingsTweaks());
         dialog.findViewById(R.id.settings_device).setOnClickListener(view -> {
             Intent intent = new Intent();
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -360,22 +360,24 @@ public class MainActivity extends Activity
         }
     }
 
-    private void showSettingsIntegration() {
-        Dialog d = showPopup(R.layout.dialog_integration);
+    private void showSettingsTweaks() {
+        Dialog d = showPopup(R.layout.dialog_tweaks);
 
-        d.findViewById(R.id.button_explore).setOnClickListener(view -> {
-            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:com.oculus.explore"));
-            startActivity(intent);
-        });
-
-        d.findViewById(R.id.button_start).setOnClickListener(view -> {
+        d.findViewById(R.id.service_app_shortcut).setOnClickListener(view -> {
             ButtonManager.isAccesibilityInitialized(this);
             ButtonManager.requestAccessibility(this);
         });
+        d.findViewById(R.id.service_explore_app).setOnClickListener(view -> openAppDetails("com.oculus.explore"));
+        d.findViewById(R.id.service_os_updater).setOnClickListener(view -> openAppDetails("com.oculus.updater"));
     }
 
     private int getPixelFromDip(int dip) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
+    }
+
+    public void openAppDetails(String pkg) {
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + pkg));
+        startActivity(intent);
     }
 }

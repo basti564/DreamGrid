@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:description="@string/start_on_volume"
+    android:description="@string/start_shortcut"
     android:settingsActivity=""
     android:accessibilityEventTypes="typeAllMask"
     android:accessibilityFlags="flagDefault|flagRequestAccessibilityButton|flagRequestFingerprintGestures|flagRequestTouchExplorationMode"
