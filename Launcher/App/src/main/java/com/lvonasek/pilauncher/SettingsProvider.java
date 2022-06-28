@@ -22,7 +22,6 @@ public class SettingsProvider
     public static final String KEY_CUSTOM_THEME = "KEY_CUSTOM_THEME";
     public static final String KEY_EDITMODE = "KEY_EDITMODE";
     public static final String KEY_SIDEBAR = "KEY_SIDEBAR";
-    public static final String KEY_VOLUME_RESTORE = "KEY_VOLUME_RESTORE";
 
     private final String KEY_APP_GROUPS = "prefAppGroups";
     private final String KEY_APP_LIST = "prefAppList";
@@ -77,6 +76,8 @@ public class SettingsProvider
             boolean showAll = selected.isEmpty();
             boolean isNotAssigned = !apps.containsKey(pkg) && first;
             boolean isInGroup = apps.containsKey(pkg) && selected.contains(apps.get(pkg));
+            boolean isVr = hasMetadata(installedApplication, "com.samsung.android.vr.application.mode");
+            boolean isEnvironment = !isVr && hasMetadata(installedApplication, "com.oculus.environmentVersion");
             if(showAll || isNotAssigned || isInGroup)
             {
                 // Check for system app
@@ -87,7 +88,7 @@ public class SettingsProvider
                 if (pkg.startsWith("com.oculus.avatar2")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.environment")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.systemutilities")) isSystemApp = true;
-                if (!isSystemApp) {
+                if (!isSystemApp && !isEnvironment) {
                     if(!installedApplication.packageName.equals(ownPackageName)) {
                         appMap.put(installedApplication.packageName, installedApplication);
                     }
@@ -103,6 +104,21 @@ public class SettingsProvider
             return na.compareTo(nb);
         });
         return output;
+    }
+
+    public boolean hasMetadata(ApplicationInfo app, String metadata)
+    {
+        if (app.metaData != null)
+        {
+            for (String key : app.metaData.keySet())
+            {
+                if (metadata.compareTo(key) == 0)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void setAppGroups(Set<String> appGroups)
