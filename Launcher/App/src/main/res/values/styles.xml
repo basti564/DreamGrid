@@ -4,4 +4,9 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowBackground">#00000000</item>
     </style>
+
+    <style name="ThemeOverlay.Holo" parent="android:Theme.Holo.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowBackground">#00000000</item>
+    </style>
 </resources>

@@ -61,13 +61,14 @@ public class MainActivity extends Activity
     private TextView mSlide;
 
     private static MainActivity instance = null;
+    private boolean mFocus;
     private SharedPreferences mPreferences;
     private SettingsProvider mSettings;
 
     public static void reset(Context context) {
         try {
             if (instance != null) {
-                instance.finish();
+                instance.finishAffinity();
                 instance = null;
             }
             context.startActivity(context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()));
@@ -144,8 +145,15 @@ public class MainActivity extends Activity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mFocus = false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        mFocus = true;
         reloadUI();
     }
 
@@ -369,10 +377,48 @@ public class MainActivity extends Activity
         });
         d.findViewById(R.id.service_explore_app).setOnClickListener(view -> openAppDetails("com.oculus.explore"));
         d.findViewById(R.id.service_os_updater).setOnClickListener(view -> openAppDetails("com.oculus.updater"));
+
+        d.findViewById(R.id.service_multiwindow).setOnClickListener(view -> {
+            Dialog dialog = showPopup(R.layout.dialog_multiwindow);
+            dialog.findViewById(R.id.disable).setOnClickListener(view12 -> {
+                SharedPreferences.Editor e = mPreferences.edit();
+                e.putBoolean(SettingsProvider.KEY_MULTIWINDOW, false);
+                e.commit();
+                dialog.dismiss();
+            });
+            dialog.findViewById(R.id.enable).setOnClickListener(view1 -> {
+                SharedPreferences.Editor e = mPreferences.edit();
+                e.putBoolean(SettingsProvider.KEY_MULTIWINDOW, true);
+                e.commit();
+                dialog.dismiss();
+            });
+        });
     }
 
     private int getPixelFromDip(int dip) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
+    }
+
+    public void openApp(String pkg) {
+        //fallback action
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (mFocus) {
+                openAppDetails(pkg);
+            }
+        }).start();
+
+        //open app action
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pkg);
+        if (mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false)) {
+            getApplicationContext().startActivity(launchIntent);
+        } else {
+            startActivity(launchIntent);
+        }
     }
 
     public void openAppDetails(String pkg) {

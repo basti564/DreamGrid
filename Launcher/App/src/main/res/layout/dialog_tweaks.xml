@@ -36,6 +36,13 @@
             app:text="@string/service_explore_app"/>
 
         <com.lvonasek.pilauncher.SettingsGroup
+            android:id="@+id/service_multiwindow"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:icon="@drawable/ic_multiwindow"
+            app:text="@string/service_multiwindow"/>
+
+        <com.lvonasek.pilauncher.SettingsGroup
             android:id="@+id/service_os_updater"
             android:layout_width="120dp"
             android:layout_height="120dp"

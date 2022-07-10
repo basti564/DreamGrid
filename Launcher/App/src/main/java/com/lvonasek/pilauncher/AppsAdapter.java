@@ -3,7 +3,6 @@ package com.lvonasek.pilauncher;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -84,6 +84,7 @@ public class AppsAdapter extends BaseAdapter
         // set value into textview
         PackageManager pm = mContext.getPackageManager();
         String name = SettingsProvider.getAppDisplayName(mContext, actApp.packageName, actApp.loadLabel(pm));
+        ProgressBar progressBar = gridView.findViewById(R.id.progress_bar);
         TextView textView = gridView.findViewById(R.id.textLabel);
         textView.setText(name);
         textView.setVisibility(mNames ? View.VISIBLE : View.GONE);
@@ -112,8 +113,8 @@ public class AppsAdapter extends BaseAdapter
             });
         } else {
             layout.setOnClickListener(view -> {
-                Intent launchIntent = pm.getLaunchIntentForPackage(actApp.packageName);
-                mContext.getApplicationContext().startActivity(launchIntent);
+                progressBar.setVisibility(View.VISIBLE);
+                mContext.openApp(actApp.packageName);
             });
             layout.setOnLongClickListener(view -> {
                 showAppDetails(actApp);

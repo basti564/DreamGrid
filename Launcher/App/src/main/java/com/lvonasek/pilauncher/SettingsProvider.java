@@ -21,6 +21,7 @@ public class SettingsProvider
     public static final String KEY_CUSTOM_SCALE = "KEY_CUSTOM_SCALE";
     public static final String KEY_CUSTOM_THEME = "KEY_CUSTOM_THEME";
     public static final String KEY_EDITMODE = "KEY_EDITMODE";
+    public static final String KEY_MULTIWINDOW = "KEY_MULTIWINDOW";
     public static final String KEY_SIDEBAR = "KEY_SIDEBAR";
 
     private final String KEY_APP_GROUPS = "prefAppGroups";
