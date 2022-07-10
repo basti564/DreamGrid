@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -91,13 +92,16 @@ public class AppsAdapter extends BaseAdapter
 
         if (mEditMode) {
             // short click for app details, long click to activate drag and drop
-            layout.setOnClickListener(view -> showAppDetails(actApp));
-            layout.setOnLongClickListener(view -> {
-                mTempPackage = actApp.packageName;
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDragAndDrop(data, shadowBuilder, view, 0);
-                return true;
+            layout.setOnTouchListener((view, motionEvent) -> {
+                if ((motionEvent.getAction() == MotionEvent.ACTION_DOWN) ||
+                        (motionEvent.getAction() == MotionEvent.ACTION_POINTER_DOWN)) {
+                    mTempPackage = actApp.packageName;
+                    mTempTimestamp = System.currentTimeMillis();
+                    ClipData data = ClipData.newPlainText(name, name);
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                    view.startDragAndDrop(data, shadowBuilder, view, 0);
+                }
+                return false;
             });
 
             // drag and drop
@@ -107,9 +111,16 @@ public class AppsAdapter extends BaseAdapter
                         view.setVisibility(View.INVISIBLE);
                     } else if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
                         mContext.reloadUI();
+                    } else if (event.getAction() == DragEvent.ACTION_DROP) {
+                        if (System.currentTimeMillis() - mTempTimestamp < 250) {
+                            showAppDetails(actApp);
+                        } else {
+                            mContext.reloadUI();
+                        }
                     }
+                    return event.getAction() != DragEvent.ACTION_DROP;
                 }
-                return event.getAction() != DragEvent.ACTION_DROP;
+                return true;
             });
         } else {
             layout.setOnClickListener(view -> {

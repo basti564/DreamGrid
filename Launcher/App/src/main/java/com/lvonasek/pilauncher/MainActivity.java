@@ -16,15 +16,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
@@ -45,7 +41,7 @@ public class MainActivity extends Activity
     public static final int PICK_ICON_CODE = 450;
     public static final int PICK_THEME_CODE = 95;
 
-    private static final int[] SCALES = {60, 77, 101, 141, 219};
+    private static final int[] SCALES = {55, 70, 95, 130, 210};
     private static final int[] THEMES = {
             R.drawable.bkg_default,
             R.drawable.bkg_glass,
@@ -57,9 +53,7 @@ public class MainActivity extends Activity
 
     private GridView mAppGrid;
     private ImageView mBackground;
-    private ListView mGroupPanel;
-    private LinearLayout mSidePanel;
-    private TextView mSlide;
+    private GridView mGroupPanel;
 
     private static MainActivity instance = null;
     private boolean mFocus;
@@ -88,10 +82,9 @@ public class MainActivity extends Activity
         instance = this;
 
         // Get UI instances
-        mAppGrid = findViewById(R.id.gridview);
+        mAppGrid = findViewById(R.id.appsView);
         mBackground = findViewById(R.id.background);
-        mGroupPanel = findViewById(R.id.listView);
-        mSidePanel = findViewById(R.id.sidePanel);
+        mGroupPanel = findViewById(R.id.groupsView);
 
         // Handle group click listener
         mGroupPanel.setOnItemClickListener((parent, view, position, id) -> {
@@ -129,15 +122,6 @@ public class MainActivity extends Activity
 
         // Set pi button
         findViewById(R.id.pi).setOnClickListener(view -> showSettingsMain());
-
-        // Set slide button
-        mSlide = findViewById(R.id.slide);
-        mSlide.setOnClickListener(view -> {
-            SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putBoolean(SettingsProvider.KEY_SIDEBAR, !mPreferences.getBoolean(SettingsProvider.KEY_SIDEBAR, true));
-            editor.commit();
-            reloadUI();
-        });
     }
 
     @Override
@@ -190,19 +174,6 @@ public class MainActivity extends Activity
 
     public void reloadUI() {
 
-        // set sidepanel
-        boolean editMode = mPreferences.getBoolean(SettingsProvider.KEY_EDITMODE, false);
-        if (editMode) {
-            mSidePanel.setVisibility(View.VISIBLE);
-            mSlide.setVisibility(View.GONE);
-        } else {
-            mSlide.setVisibility(View.VISIBLE);
-
-            boolean visible = mPreferences.getBoolean(SettingsProvider.KEY_SIDEBAR, true);
-            mSidePanel.setVisibility(visible ? View.VISIBLE : View.GONE);
-            mSlide.setText(visible ? "\u00ab" : "\u00bb");
-        }
-
         // set customization
         boolean names = mPreferences.getBoolean(SettingsProvider.KEY_CUSTOM_NAMES, DEFAULT_NAMES);
         int opacity = mPreferences.getInt(SettingsProvider.KEY_CUSTOM_OPACITY, DEFAULT_OPACITY);
@@ -223,8 +194,10 @@ public class MainActivity extends Activity
 
         // set context
         scale += getPixelFromDip(8);
+        boolean editMode = mPreferences.getBoolean(SettingsProvider.KEY_EDITMODE, false);
         mAppGrid.setAdapter(new AppsAdapter(this, editMode, scale, names));
         mGroupPanel.setAdapter(new GroupsAdapter(this, editMode));
+        mGroupPanel.setNumColumns(Math.min(mGroupPanel.getAdapter().getCount(), GroupsAdapter.MAX_GROUPS - 1));
     }
 
     public void setTheme(ImageView[] views, int index) {
@@ -273,7 +246,6 @@ public class MainActivity extends Activity
             }
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean(SettingsProvider.KEY_EDITMODE, editMode);
-            editor.putBoolean(SettingsProvider.KEY_SIDEBAR, true);
             editor.commit();
             reloadUI();
             dialog.dismiss();

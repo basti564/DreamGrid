@@ -20,6 +20,7 @@ import java.util.Set;
 
 public class GroupsAdapter extends BaseAdapter
 {
+    public static final int MAX_GROUPS = 12;
     public static final String HIDDEN_GROUP = "HIDDEN!";
 
     private MainActivity mActivity;
@@ -63,6 +64,10 @@ public class GroupsAdapter extends BaseAdapter
     {
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.lv_group, parent, false);
+
+        if (position >= MAX_GROUPS - 1) {
+            itemView.setVisibility(View.GONE);
+        }
 
         // set menu action
         View menu = itemView.findViewById(R.id.menu);
@@ -176,7 +181,7 @@ public class GroupsAdapter extends BaseAdapter
     private void setLook(int position, View itemView, View menu) {
         if (mSelection.contains(mItems.get(position))) {
             int[] colors = new int[] {Color.argb(192, 255, 255, 255), Color.TRANSPARENT};
-            GradientDrawable.Orientation orientation = GradientDrawable.Orientation.LEFT_RIGHT;
+            GradientDrawable.Orientation orientation = GradientDrawable.Orientation.TOP_BOTTOM;
             itemView.setBackground(new GradientDrawable(orientation, colors));
 
             if (mEditMode && (position < getCount() - 2)) {

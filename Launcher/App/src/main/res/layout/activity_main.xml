@@ -14,31 +14,43 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/sidePanel"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
 
-            <ListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            <GridView
+                android:id="@+id/groupsView"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:padding="0dp"
-                android:layout_marginBottom="40sp"
                 android:dividerHeight="0dp"
                 android:divider="#00000000" />
+
+            <com.lvonasek.pilauncher.TextView
+                android:id="@+id/pi"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/bkg_pi"
+                android:text="\u03C0"
+                android:textColor="@android:color/white"
+                android:shadowColor="#80000000"
+                android:shadowRadius="5"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
         </LinearLayout>
 
         <GridView
-            android:id="@+id/gridview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingTop="6dp"
-            android:paddingBottom="20dp"
+            android:id="@+id/appsView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:numColumns="auto_fit"
@@ -50,27 +62,4 @@
             android:horizontalSpacing="15dp"
             android:verticalSpacing="15dp"/>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/slide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp"
-        android:text="\u00ab"
-        android:textColor="@android:color/white"
-        android:textSize="30dp"/>
-
-    <TextView
-        android:id="@+id/pi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp"
-        android:text="\u03C0"
-        android:textColor="@android:color/white"
-        android:textSize="20dp"/>
-
 </RelativeLayout>
