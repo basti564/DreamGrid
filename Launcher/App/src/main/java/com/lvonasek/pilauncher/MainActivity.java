@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -399,7 +400,7 @@ public class MainActivity extends Activity
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
     }
 
-    public void openApp(String pkg) {
+    public void openApp(ApplicationInfo app) {
         //fallback action
         new Thread(() -> {
             try {
@@ -408,13 +409,22 @@ public class MainActivity extends Activity
                 e.printStackTrace();
             }
             if (mFocus) {
-                openAppDetails(pkg);
+                openAppDetails(app.packageName);
             }
         }).start();
 
+        //detect if it is a VR app
+        boolean vr = false;
+        for (String key : app.metaData.keySet()) {
+            if (key.contains("vr.application.mode")) {
+                vr = true;
+                break;
+            }
+        }
+
         //open app action
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pkg);
-        if (mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false)) {
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(app.packageName);
+        if (vr || mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false)) {
             getApplicationContext().startActivity(launchIntent);
         } else {
             startActivity(launchIntent);

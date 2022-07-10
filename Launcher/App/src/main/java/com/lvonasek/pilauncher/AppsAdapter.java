@@ -114,7 +114,7 @@ public class AppsAdapter extends BaseAdapter
         } else {
             layout.setOnClickListener(view -> {
                 progressBar.setVisibility(View.VISIBLE);
-                mContext.openApp(actApp.packageName);
+                mContext.openApp(actApp);
             });
             layout.setOnLongClickListener(view -> {
                 showAppDetails(actApp);
