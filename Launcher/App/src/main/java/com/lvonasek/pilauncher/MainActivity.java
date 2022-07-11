@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.GridView;
@@ -121,7 +122,16 @@ public class MainActivity extends Activity
         });
 
         // Set pi button
-        findViewById(R.id.pi).setOnClickListener(view -> showSettingsMain());
+        View pi = findViewById(R.id.pi);
+        pi.setOnClickListener(view -> showSettingsMain());
+        pi.setOnLongClickListener(view -> {
+            boolean editMode = mPreferences.getBoolean(SettingsProvider.KEY_EDITMODE, false);
+            if (!editMode) {
+                mSettings.setSelectedGroups(mSettings.getAppGroups());
+                reloadUI();
+            }
+            return true;
+        });
     }
 
     @Override
@@ -387,10 +397,12 @@ public class MainActivity extends Activity
 
         //detect if it is a VR app
         boolean vr = false;
-        for (String key : app.metaData.keySet()) {
-            if (key.contains("vr.application.mode")) {
-                vr = true;
-                break;
+        if (app.metaData != null) {
+            for (String key : app.metaData.keySet()) {
+                if (key.contains("vr.application.mode")) {
+                    vr = true;
+                    break;
+                }
             }
         }
 
