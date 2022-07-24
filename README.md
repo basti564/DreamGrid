@@ -7,7 +7,7 @@ This is a simple launcher for Meta Quest VR headsets supporting Android/Official
 
 ## Compile the launcher
 * Open **Launcher** in Android Studio
-* Ensure USB debugging is enalbed on your headset
+* Ensure USB debugging is enabled on your headset
 * Hit play button in Android Studio
 
 ## Convert icons from SideQuest
