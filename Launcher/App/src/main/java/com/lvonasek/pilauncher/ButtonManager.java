@@ -10,7 +10,8 @@ public class ButtonManager extends AccessibilityService
     public void onAccessibilityEvent(AccessibilityEvent event)
     {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            if ("[Explore]".compareTo(event.getText().toString()) == 0) {
+            if ("[Explore]".compareTo(event.getText().toString()) == 0 ||
+                    "[Explorer]".compareTo(event.getText().toString()) == 0) {
                 MainActivity.reset(getApplicationContext());
             }
         }
