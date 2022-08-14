@@ -25,6 +25,7 @@
             android:id="@+id/service_app_shortcut"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/service_app_shortcut"
             app:icon="@drawable/ic_shortcut"
             app:text="@string/service_app_shortcut"/>
 
@@ -32,6 +33,7 @@
             android:id="@+id/service_explore_app"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/service_explore_app"
             app:icon="@drawable/ic_explore"
             app:text="@string/service_explore_app"/>
 
@@ -39,6 +41,7 @@
             android:id="@+id/service_multiwindow"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/service_multiwindow"
             app:icon="@drawable/ic_multiwindow"
             app:text="@string/service_multiwindow"/>
 
@@ -46,6 +49,7 @@
             android:id="@+id/service_os_updater"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/service_os_updater"
             app:icon="@drawable/ic_updater"
             app:text="@string/service_os_updater"/>
     </LinearLayout>

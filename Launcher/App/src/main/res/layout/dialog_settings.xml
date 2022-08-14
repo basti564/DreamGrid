@@ -24,6 +24,7 @@
             android:id="@+id/settings_look"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/settings_look"
             app:icon="@drawable/ic_look"
             app:text="@string/settings_look"/>
 
@@ -31,6 +32,7 @@
             android:id="@+id/settings_device"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/settings_device"
             app:icon="@drawable/ic_device"
             app:text="@string/settings_device"/>
 
@@ -38,6 +40,7 @@
             android:id="@+id/settings_apps"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/settings_apps_enable"
             app:icon="@drawable/ic_editing_on"
             app:text="@string/settings_apps_enable"/>
 
@@ -45,6 +48,7 @@
             android:id="@+id/settings_tweaks"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:tooltipText="@string/settings_tweaks"
             app:icon="@drawable/ic_tweaks"
             app:text="@string/settings_tweaks"/>
     </LinearLayout>

@@ -247,6 +247,7 @@ public class MainActivity extends Activity
         boolean editMode = !mPreferences.getBoolean(SettingsProvider.KEY_EDITMODE, false);
         apps.setIcon(editMode ? R.drawable.ic_editing_on : R.drawable.ic_editing_off);
         apps.setText(getString(editMode ? R.string.settings_apps_enable : R.string.settings_apps_disable));
+        apps.setTooltipText(getString(editMode ? R.string.settings_apps_enable : R.string.settings_apps_disable));
         apps.setOnClickListener(view1 -> {
             ArrayList<String> selected = mSettings.getAppGroupsSorted(true);
             if (editMode && (selected.size() > 1)) {
