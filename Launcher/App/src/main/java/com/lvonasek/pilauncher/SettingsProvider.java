@@ -29,6 +29,7 @@ public class SettingsProvider
     private final String SEPARATOR = "#@%";
 
     private static SettingsProvider instance;
+    private static Context context;
 
     public static synchronized SettingsProvider getInstance (Context context)
     {
@@ -46,6 +47,7 @@ public class SettingsProvider
 
     private SettingsProvider(Context context) {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.context = context;
     }
 
     public void setAppList(Map<String, String> appList)
@@ -164,7 +166,7 @@ public class SettingsProvider
         try
         {
             Set<String> def = new HashSet<>();
-            def.add("Apps");
+            def.add(context.getString(R.string.default_apps_group));
             mAppGroups = mPreferences.getStringSet(KEY_APP_GROUPS, def);
             mSelectedGroups = mPreferences.getStringSet(KEY_SELECTED_GROUPS, def);
 

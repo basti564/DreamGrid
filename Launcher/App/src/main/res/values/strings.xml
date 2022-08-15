@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">.. \u03C0 Launcher ..</string>
+    <string name="default_apps_group">Apps</string>
     <string name="add_group">Add group</string>
     <string name="delete_group">Delete group</string>
     <string name="edit_group">Edit group</string>
@@ -14,7 +15,7 @@
     <string name="background_opacity">Background opacity</string>
     <string name="icons_size">Icons size</string>
     <string name="show_app_names">Show app names</string>
-    <string name="start_shortcut">Open the launcher with Explore icon from the system dashboard. For a smooth experience it is recommended to disable the Explore app.\n\nTHIS WILL NOT WORK IF THE HEADSET LANGUAGE IS NOT SET TO ENGLISH.</string>
+    <string name="start_shortcut">Open the launcher with Explore icon from the system dashboard. For a smooth experience it is recommended to disable the Explore app.\n\nDOES NOT SUPPORT ALL HEADSET LANGUAGES. SET YOUR HEADSET LANGUAGE TO ENGLISH IF THIS FEATURE DOES NOT WORK PROPERLY.</string>
 
     <string name="service_app_shortcut">App shortcut</string>
     <string name="service_explore_app">Explore app</string>
@@ -24,4 +25,6 @@
     <string name="service_enable">Enable</string>
     <string name="service_disable">Disable</string>
     <string name="service_multiwindow_desc">2D apps are always opened in the middle multiwindow slot. By enabling multiwindow in the launcher the opened apps will be opened in a new window. Do you want to enable or disable this feature?</string>
+
+    <string name="explore_accessibility_event_name">[Explore]</string>
 </resources>
