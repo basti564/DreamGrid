@@ -91,6 +91,7 @@ public class SettingsProvider
                 if (pkg.startsWith("com.meta.environment")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.avatar2")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.environment")) isSystemApp = true;
+                if (pkg.startsWith("com.oculus.helpcenter")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.systemutilities")) isSystemApp = true;
                 if (!isSystemApp && !isEnvironment) {
                     if(!installedApplication.packageName.equals(ownPackageName)) {
