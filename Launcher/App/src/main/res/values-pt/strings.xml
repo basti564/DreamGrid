@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">.. \u03C0 Launcher ..</string>
+    <string name="default_apps_group">Aplicativos</string>
+    <string name="add_group">Adicionar groupo</string>
+    <string name="delete_group">Deletar groupo</string>
+    <string name="edit_group">Editar groupo</string>
+    <string name="app_details">Detalhes do aplicativo</string>
+    <string name="apps_hidden">Ocultos</string>
+
+    <string name="settings_apps_enable">Habilitar edição</string>
+    <string name="settings_apps_disable">Desabilitar edição</string>
+    <string name="settings_device">Configurações do dispositivo</string>
+    <string name="settings_look">Customizar</string>
+    <string name="settings_tweaks">Ajustes do sistema</string>
+    <string name="background_opacity">Opacidade do plano de fundo</string>
+    <string name="icons_size">Tamanho das miniaturas</string>
+    <string name="show_app_names">Mostrar nome dos aplicativos</string>
+    <string name="start_shortcut">Abra o launcher com o ícone Explorar no painel do sistema. Para uma experiência fluída, é recomendável desativar o aplicativo Explorar.</string>
+
+    <string name="service_app_shortcut">Atalho do aplicativo</string>
+    <string name="service_explore_app">Aplicativo Explorar</string>
+    <string name="service_multiwindow">Múltiplas Janelas</string>
+    <string name="service_os_updater">Atualizador SO</string>
+
+    <string name="service_enable">Habilitar</string>
+    <string name="service_disable">Desabilitar</string>
+    <string name="service_multiwindow_desc">Os aplicativos 2D são sempre abertos no slot de central. Ao habilitar múltiplas janelas no launcher, os aplicativos abertos serão abertos em uma nova janela. Deseja habilitar ou desabilitar este recurso?</string>
+
+    <string name="explore_accessibility_event_name">[Explorar]</string>
+</resources>
