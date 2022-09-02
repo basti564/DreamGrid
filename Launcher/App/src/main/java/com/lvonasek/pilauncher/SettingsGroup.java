@@ -39,6 +39,8 @@ public class SettingsGroup extends LinearLayout {
     private void getAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SettingsGroup, defStyleAttr, 0);
         mText.setText(a.getString(R.styleable.SettingsGroup_text));
+        mText.setSingleLine(false);
+        mText.setLines(2);
         mIcon.setImageDrawable(a.getDrawable(R.styleable.SettingsGroup_icon));
         a.recycle();
     }
