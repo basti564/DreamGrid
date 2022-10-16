@@ -232,8 +232,10 @@ public class MainActivity extends Activity
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = 660;
-        lp.height = 400;
+        if (!mSettings.isPicoHeadset()) {
+            lp.width = 660;
+            lp.height = 400;
+        }
         dialog.getWindow().setAttributes(lp);
         dialog.findViewById(R.id.layout).requestLayout();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bkg_dialog);
@@ -270,6 +272,9 @@ public class MainActivity extends Activity
             intent.setPackage("com.android.settings");
             startActivity(intent);
         });
+        if (mSettings.isPicoHeadset()) {
+            dialog.findViewById(R.id.settings_tweaks).setVisibility(View.GONE);
+        }
     }
 
     private void showSettingsLook() {

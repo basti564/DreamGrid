@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
@@ -258,5 +259,9 @@ public class SettingsProvider
             if ((c >= '0') && (c <= '9')) output.append(c);
         }
         return output.toString();
+    }
+
+    public boolean isPicoHeadset() {
+        return Build.MANUFACTURER.toUpperCase().startsWith("PICO");
     }
 }
