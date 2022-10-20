@@ -1,3 +1,30 @@
 <resources>
+    <string name="app_name">.. \u03C0 Launcher ..</string>
+    <string name="default_apps_group">Applications</string>
+    <string name="add_group">Rajouter un groupe</string>
+    <string name="delete_group">Effacer un groupe</string>
+    <string name="edit_group">Modifier un groupe</string>
+    <string name="app_details">Details de l'application</string>
+    <string name="apps_hidden">Cachée</string>
+
+    <string name="settings_apps_enable">Activer l'edition</string>
+    <string name="settings_apps_disable">Desactiver l'edition</string>
+    <string name="settings_device">Parametre de l'appareil</string>
+    <string name="settings_look">Customiser</string>
+    <string name="settings_tweaks">Réglages systeme</string>
+    <string name="background_opacity">Opacité du background</string>
+    <string name="icons_size">Taille des icones</string>
+    <string name="show_app_names">Montrer le nom des applications</string>
+    <string name="start_shortcut">Ouvrir le launcher via l'icone Explorer du dashboard. Pour une meilleure experience il est recommende de desactiver l'app Explorer.</string>
+
+    <string name="service_app_shortcut">raccourci d'application</string>
+    <string name="service_explore_app">Explore app</string>
+    <string name="service_multiwindow">Multi-fenetre</string>
+    <string name="service_os_updater">Mise a jour de l'OS</string>
+
+    <string name="service_enable">Activer</string>
+    <string name="service_disable">Desactiver</string>
+    <string name="service_multiwindow_desc">les applications 2D sont toujours ouverte au milieu de l'espace Multi-fenetre. en activant Multi-fenetre dans le launcher les applications ouvertes le seront dans une nouvelle fenetre. voulez vous activer ou desactiver cette feature?</string>
+
     <string name="explore_accessibility_event_name">[Explorer]</string>
 </resources>
