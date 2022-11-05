@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.DataInputStream;
@@ -35,7 +36,7 @@ public abstract class AbstractPlatform {
         if (app.packageName.startsWith("psp://")) {
             return new PSPPlatform();
         } else if (isVirtualRealityApp(app)) {
-            return new OculusPlatform();
+            return new VRPlatform();
         } else {
             return new AndroidPlatform();
         }
@@ -92,6 +93,9 @@ public abstract class AbstractPlatform {
     protected static boolean isVirtualRealityApp(ApplicationInfo app) {
         if (app.metaData != null) {
             for (String key : app.metaData.keySet()) {
+                if (key.startsWith("pvr.")) {
+                    return true;
+                }
                 if (key.contains("vr.application.mode")) {
                     return true;
                 }

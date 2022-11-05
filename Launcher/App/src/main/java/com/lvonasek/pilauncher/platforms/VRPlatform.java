@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class OculusPlatform extends AbstractPlatform {
+public class VRPlatform extends AbstractPlatform {
 
     private static final String ICONS1_URL = "https://github.com/vKolerts/quest_icons/raw/master/450/";
     private static final String ICONS2_URL = "https://raw.githubusercontent.com/lvonasek/binary/master/QuestPiLauncher/icons/";
@@ -58,9 +58,6 @@ public class OculusPlatform extends AbstractPlatform {
 
     private void downloadIcon(final Activity context, String pkg, String name, final Runnable callback) {
         final File file = pkg2path(context, pkg);
-        if (file.exists()) {
-            return;
-        }
         new Thread(() -> {
             String autogen = null;
             if (ignoredIcons.contains(file.getName())) {

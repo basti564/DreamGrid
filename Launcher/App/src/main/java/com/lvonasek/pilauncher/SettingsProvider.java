@@ -8,7 +8,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.lvonasek.pilauncher.platforms.AndroidPlatform;
-import com.lvonasek.pilauncher.platforms.OculusPlatform;
+import com.lvonasek.pilauncher.platforms.VRPlatform;
 import com.lvonasek.pilauncher.platforms.PSPPlatform;
 
 import java.util.ArrayList;
@@ -72,9 +72,9 @@ public class SettingsProvider
         // Get list of installed apps
         Map<String, String> apps = getAppList();
         ArrayList<ApplicationInfo> installedApplications = new ArrayList<>();
-        //installedApplications.addAll(new AndroidPlatform().getInstalledApps(context));
-        //installedApplications.addAll(new OculusPlatform().getInstalledApps(context));
+        installedApplications.addAll(new AndroidPlatform().getInstalledApps(context));
         installedApplications.addAll(new PSPPlatform().getInstalledApps(context));
+        installedApplications.addAll(new VRPlatform().getInstalledApps(context));
 
         // Put them into a map with package name as keyword for faster handling
         String ownPackageName = context.getApplicationContext().getPackageName();
