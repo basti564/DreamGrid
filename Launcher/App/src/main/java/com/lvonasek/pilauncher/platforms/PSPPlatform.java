@@ -46,7 +46,8 @@ public class PSPPlatform  extends AbstractPlatform {
     @Override
     public void runApp(Context context, ApplicationInfo app, boolean multiwindow) {
         String path = app.packageName.substring(PACKAGE_PREFIX.length());
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("file://" + path));
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse("file://" + path), "*/*");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setPackage(EMULATOR_PACKAGE);
         context.getApplicationContext().startActivity(intent);
