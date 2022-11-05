@@ -2,7 +2,6 @@ package com.lvonasek.pilauncher;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
@@ -40,18 +39,8 @@ public class ImageUtils {
     }
 
     public static void showImagePicker(Activity activity, int requestCode) {
-        String[] permissions = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-        boolean read = activity.checkSelfPermission(permissions[0]) == PackageManager.PERMISSION_GRANTED;
-        boolean write = activity.checkSelfPermission(permissions[1]) == PackageManager.PERMISSION_GRANTED;
-        if (read && write) {
-            ImagePicker picker = ImagePicker.create(activity).single();
-            picker.showCamera(false);
-            picker.start(requestCode);
-        } else {
-            activity.requestPermissions(permissions, 0);
-        }
+        ImagePicker picker = ImagePicker.create(activity).single();
+        picker.showCamera(false);
+        picker.start(requestCode);
     }
 }

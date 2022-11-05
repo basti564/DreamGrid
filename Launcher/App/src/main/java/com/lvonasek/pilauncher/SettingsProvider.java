@@ -7,6 +7,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import com.lvonasek.pilauncher.platforms.AndroidPlatform;
+import com.lvonasek.pilauncher.platforms.OculusPlatform;
+import com.lvonasek.pilauncher.platforms.PSPPlatform;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,8 +71,10 @@ public class SettingsProvider
 
         // Get list of installed apps
         Map<String, String> apps = getAppList();
-        PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> installedApplications = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        ArrayList<ApplicationInfo> installedApplications = new ArrayList<>();
+        //installedApplications.addAll(new AndroidPlatform().getInstalledApps(context));
+        //installedApplications.addAll(new OculusPlatform().getInstalledApps(context));
+        installedApplications.addAll(new PSPPlatform().getInstalledApps(context));
 
         // Put them into a map with package name as keyword for faster handling
         String ownPackageName = context.getApplicationContext().getPackageName();
@@ -103,6 +109,7 @@ public class SettingsProvider
         }
 
         // Create new list of apps
+        PackageManager pm = context.getPackageManager();
         ArrayList<ApplicationInfo> output = new ArrayList<>(appMap.values());
         output.sort((a, b) -> {
             String na = getAppDisplayName(context, a.packageName, a.loadLabel(pm)).toUpperCase();

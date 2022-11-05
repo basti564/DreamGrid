@@ -1,5 +1,6 @@
 package com.lvonasek.pilauncher;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,6 +27,10 @@ import android.widget.SeekBar;
 
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
+import com.lvonasek.pilauncher.platforms.AbstractPlatform;
+import com.lvonasek.pilauncher.ui.AppsAdapter;
+import com.lvonasek.pilauncher.ui.GroupsAdapter;
+import com.lvonasek.pilauncher.ui.SettingsGroup;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -149,7 +155,18 @@ public class MainActivity extends Activity
     protected void onResume() {
         super.onResume();
         mFocus = true;
-        reloadUI();
+
+        String[] permissions = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        boolean read = checkSelfPermission(permissions[0]) == PackageManager.PERMISSION_GRANTED;
+        boolean write = checkSelfPermission(permissions[1]) == PackageManager.PERMISSION_GRANTED;
+        if (read && write) {
+            reloadUI();
+        } else {
+            requestPermissions(permissions, 0);
+        }
     }
 
     @Override
@@ -401,24 +418,10 @@ public class MainActivity extends Activity
             }
         }).start();
 
-        //detect if it is a VR app
-        boolean vr = false;
-        if (app.metaData != null) {
-            for (String key : app.metaData.keySet()) {
-                if (key.contains("vr.application.mode")) {
-                    vr = true;
-                    break;
-                }
-            }
-        }
-
-        //open app action
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(app.packageName);
-        if (vr || mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false)) {
-            getApplicationContext().startActivity(launchIntent);
-        } else {
-            startActivity(launchIntent);
-        }
+        //open the app
+        AbstractPlatform platform = AbstractPlatform.getPlatform(app);
+        boolean multiview = mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false);
+        platform.runApp(this, app, multiview);
     }
 
     public void openAppDetails(String pkg) {

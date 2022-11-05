@@ -34,7 +34,7 @@
                 android:visibility="gone"/>
         </RelativeLayout>
 
-        <com.lvonasek.pilauncher.TextView
+        <com.lvonasek.pilauncher.ui.TextView
             android:id="@+id/textLabel"
             android:singleLine="true"
             android:textSize="16sp"
