@@ -6,7 +6,6 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.DataInputStream;
@@ -33,7 +32,7 @@ public abstract class AbstractPlatform {
     }
 
     public static AbstractPlatform getPlatform(ApplicationInfo app) {
-        if (app.packageName.startsWith("psp://")) {
+        if (app.packageName.startsWith(PSPPlatform.PACKAGE_PREFIX)) {
             return new PSPPlatform();
         } else if (isVirtualRealityApp(app)) {
             return new VRPlatform();
@@ -44,6 +43,10 @@ public abstract class AbstractPlatform {
 
     public static File pkg2path(Context context, String pkg) {
         return new File(context.getApplicationInfo().dataDir, pkg + ".jpg");
+    }
+
+    public static File pkg2pathPNG(Context context, String pkg) {
+        return new File(context.getApplicationInfo().dataDir, pkg + ".png");
     }
 
     public static boolean updateIcon(ImageView icon, File file, String pkg) {
@@ -58,7 +61,14 @@ public abstract class AbstractPlatform {
 
     protected static boolean downloadFile(String url, File outputFile) {
         try {
-            InputStream is = new URL(url).openStream();
+            return saveStream(new URL(url).openStream(), outputFile);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    protected static boolean saveStream(InputStream is, File outputFile) {
+        try {
             DataInputStream dis = new DataInputStream(is);
 
             int length;

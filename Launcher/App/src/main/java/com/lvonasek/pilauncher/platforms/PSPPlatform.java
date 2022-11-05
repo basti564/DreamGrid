@@ -8,8 +8,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import net.didion.loopy.iso9660.ISO9660FileEntry;
+import net.didion.loopy.iso9660.ISO9660FileSystem;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Scanner;
 
 public class PSPPlatform  extends AbstractPlatform {
@@ -17,8 +22,8 @@ public class PSPPlatform  extends AbstractPlatform {
     private static final String CONFIG_FILE = "/mnt/sdcard/PSP/SYSTEM/ppsspp.ini";
     private static final String EMULATOR_PACKAGE = "org.ppsspp.ppsspp";
     private static final String FILENAME_PREFIX = "FileName";
-    private static final String PACKAGE_PREFIX = "psp://";
     private static final String RECENT_TAG = "[Recent]";
+    public static final String PACKAGE_PREFIX = "psp/";
 
     @Override
     public ArrayList<ApplicationInfo> getInstalledApps(Context context) {
@@ -41,6 +46,35 @@ public class PSPPlatform  extends AbstractPlatform {
                 break;
             }
         }
+
+        final File file = pkg2pathPNG(activity, app.packageName);
+        file.getParentFile().mkdirs();
+        if (file.exists()) {
+            if (AbstractPlatform.updateIcon(icon, file, app.packageName)) {
+                return;
+            }
+        }
+
+        new Thread(() -> {
+            ISO9660FileSystem discFs;
+            String isoToRead = app.packageName.substring(PACKAGE_PREFIX.length());
+            try {
+                discFs = new ISO9660FileSystem(new File(isoToRead), true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+
+            Enumeration es = discFs.getEntries();
+            while (es.hasMoreElements()) {
+                ISO9660FileEntry fileEntry = (ISO9660FileEntry) es.nextElement();
+                if (fileEntry.getName().contains("ICON0.PNG")) {
+                    if (saveStream(discFs.getInputStream(fileEntry), file)) {
+                        activity.runOnUiThread(() -> AbstractPlatform.updateIcon(icon, file, app.packageName));
+                    }
+                }
+            }
+        }).start();
     }
 
     @Override
