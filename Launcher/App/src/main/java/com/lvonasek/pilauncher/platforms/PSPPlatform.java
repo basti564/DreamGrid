@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.ImageView;
-
-import com.lvonasek.pilauncher.R;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ public class PSPPlatform  extends AbstractPlatform {
         ArrayList<ApplicationInfo> output = new ArrayList<>();
         for (String iso : locateISOs()) {
             ApplicationInfo app = new ApplicationInfo();
-            app.name = iso; //TODO:get name
+            app.name = iso.substring(iso.lastIndexOf('/') + 1);
             app.packageName = PACKAGE_PREFIX + iso;
             output.add(app);
         }
@@ -36,8 +34,13 @@ public class PSPPlatform  extends AbstractPlatform {
 
     @Override
     public void loadIcon(Activity activity, ImageView icon, ApplicationInfo app, String name) {
-        icon.setImageResource(R.drawable.ic_launcher);
-        //TODO:proper implementation
+        PackageManager pm = activity.getPackageManager();
+        for (ApplicationInfo info : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
+            if (info.packageName.compareTo(EMULATOR_PACKAGE) == 0) {
+                icon.setImageDrawable(info.loadIcon(pm));
+                break;
+            }
+        }
     }
 
     @Override
@@ -45,7 +48,7 @@ public class PSPPlatform  extends AbstractPlatform {
         String path = app.packageName.substring(PACKAGE_PREFIX.length());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("file://" + path));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //TODO:intent.setPackage(EMULATOR_PACKAGE);
+        intent.setPackage(EMULATOR_PACKAGE);
         context.getApplicationContext().startActivity(intent);
     }
 
