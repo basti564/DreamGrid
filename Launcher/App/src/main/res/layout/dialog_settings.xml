@@ -46,6 +46,20 @@
             app:text="@string/settings_apps_enable"/>
 
         <com.lvonasek.pilauncher.ui.SettingsGroup
+            android:id="@+id/settings_platforms"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:tooltipText="@string/settings_platforms"
+            app:icon="@drawable/ic_platforms"
+            app:text="@string/settings_platforms"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <com.lvonasek.pilauncher.ui.SettingsGroup
             android:id="@+id/settings_tweaks"
             android:layout_width="120dp"
             android:layout_height="120dp"

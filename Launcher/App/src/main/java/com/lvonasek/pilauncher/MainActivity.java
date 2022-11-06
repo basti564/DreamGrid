@@ -249,7 +249,7 @@ public class MainActivity extends Activity
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
-        if (!mSettings.isPicoHeadset()) {
+        if (mSettings.isOculusHeadset()) {
             lp.width = 660;
             lp.height = 400;
         }
@@ -282,6 +282,7 @@ public class MainActivity extends Activity
         });
 
         dialog.findViewById(R.id.settings_look).setOnClickListener(view -> showSettingsLook());
+        dialog.findViewById(R.id.settings_platforms).setOnClickListener(view -> showSettingsPlatforms());
         dialog.findViewById(R.id.settings_tweaks).setOnClickListener(view -> showSettingsTweaks());
         dialog.findViewById(R.id.settings_device).setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -289,7 +290,7 @@ public class MainActivity extends Activity
             intent.setPackage("com.android.settings");
             startActivity(intent);
         });
-        if (mSettings.isPicoHeadset()) {
+        if (!mSettings.isOculusHeadset()) {
             dialog.findViewById(R.id.settings_tweaks).setVisibility(View.GONE);
         }
     }
@@ -372,6 +373,38 @@ public class MainActivity extends Activity
                 }
             });
         }
+    }
+
+
+    private void showSettingsPlatforms() {
+        Dialog d = showPopup(R.layout.dialog_platforms);
+
+        CheckBox android = d.findViewById(R.id.checkbox_android);
+        android.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_ANDROID, true));
+        android.setOnCheckedChangeListener((compoundButton, value) -> {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(SettingsProvider.KEY_PLATFORM_ANDROID, value);
+            editor.commit();
+            reloadUI();
+        });
+
+        CheckBox psp = d.findViewById(R.id.checkbox_psp);
+        psp.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_PSP, true));
+        psp.setOnCheckedChangeListener((compoundButton, value) -> {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(SettingsProvider.KEY_PLATFORM_PSP, value);
+            editor.commit();
+            reloadUI();
+        });
+
+        CheckBox vr = d.findViewById(R.id.checkbox_vr);
+        vr.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_VR, true));
+        vr.setOnCheckedChangeListener((compoundButton, value) -> {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(SettingsProvider.KEY_PLATFORM_VR, value);
+            editor.commit();
+            reloadUI();
+        });
     }
 
     private void showSettingsTweaks() {

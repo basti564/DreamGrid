@@ -11,6 +11,7 @@
     <string name="settings_apps_disable">Disable editing</string>
     <string name="settings_device">Device settings</string>
     <string name="settings_look">Customize</string>
+    <string name="settings_platforms">Platforms</string>
     <string name="settings_tweaks">System tweaks</string>
     <string name="background_opacity">Background opacity</string>
     <string name="icons_size">Icons size</string>
