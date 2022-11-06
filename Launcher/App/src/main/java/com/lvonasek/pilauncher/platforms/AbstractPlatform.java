@@ -46,11 +46,15 @@ public abstract class AbstractPlatform {
     }
 
     public static boolean updateIcon(ImageView icon, File file, String pkg) {
-        Drawable drawable = Drawable.createFromPath(file.getAbsolutePath());
-        if (drawable != null) {
-            icon.setImageDrawable(drawable);
-            iconCache.put(pkg, drawable);
-            return true;
+        try {
+            Drawable drawable = Drawable.createFromPath(file.getAbsolutePath());
+            if (drawable != null) {
+                icon.setImageDrawable(drawable);
+                iconCache.put(pkg, drawable);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }

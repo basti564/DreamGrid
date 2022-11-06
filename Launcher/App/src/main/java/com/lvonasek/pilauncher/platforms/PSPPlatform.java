@@ -28,10 +28,10 @@ public class PSPPlatform  extends AbstractPlatform {
     @Override
     public ArrayList<ApplicationInfo> getInstalledApps(Context context) {
         ArrayList<ApplicationInfo> output = new ArrayList<>();
-        for (String iso : locateISOs()) {
+        for (String path : locateGames()) {
             ApplicationInfo app = new ApplicationInfo();
-            app.name = iso.substring(iso.lastIndexOf('/') + 1);
-            app.packageName = PACKAGE_PREFIX + iso;
+            app.name = path.substring(path.lastIndexOf('/') + 1);
+            app.packageName = PACKAGE_PREFIX + path;
             output.add(app);
         }
         return output;
@@ -39,16 +39,7 @@ public class PSPPlatform  extends AbstractPlatform {
 
     @Override
     public void loadIcon(Activity activity, ImageView icon, ApplicationInfo app, String name) {
-        PackageManager pm = activity.getPackageManager();
-        for (ApplicationInfo info : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
-            if (info.packageName.compareTo(EMULATOR_PACKAGE) == 0) {
-                icon.setImageDrawable(info.loadIcon(pm));
-                break;
-            }
-        }
-
         final File file = pkg2path(activity, app.packageName);
-        file.getParentFile().mkdirs();
         if (file.exists()) {
             if (AbstractPlatform.updateIcon(icon, file, app.packageName)) {
                 return;
@@ -56,23 +47,22 @@ public class PSPPlatform  extends AbstractPlatform {
         }
 
         new Thread(() -> {
-            ISO9660FileSystem discFs;
-            String isoToRead = app.packageName.substring(PACKAGE_PREFIX.length());
             try {
-                discFs = new ISO9660FileSystem(new File(isoToRead), true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
+                file.getParentFile().mkdirs();
+                String isoToRead = app.packageName.substring(PACKAGE_PREFIX.length());
+                ISO9660FileSystem discFs = new ISO9660FileSystem(new File(isoToRead), true);
 
-            Enumeration es = discFs.getEntries();
-            while (es.hasMoreElements()) {
-                ISO9660FileEntry fileEntry = (ISO9660FileEntry) es.nextElement();
-                if (fileEntry.getName().contains("ICON0.PNG")) {
-                    if (saveStream(discFs.getInputStream(fileEntry), file)) {
-                        activity.runOnUiThread(() -> AbstractPlatform.updateIcon(icon, file, app.packageName));
+                Enumeration es = discFs.getEntries();
+                while (es.hasMoreElements()) {
+                    ISO9660FileEntry fileEntry = (ISO9660FileEntry) es.nextElement();
+                    if (fileEntry.getName().contains("ICON0.PNG")) {
+                        if (saveStream(discFs.getInputStream(fileEntry), file)) {
+                            activity.runOnUiThread(() -> AbstractPlatform.updateIcon(icon, file, app.packageName));
+                        }
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
     }
@@ -87,7 +77,7 @@ public class PSPPlatform  extends AbstractPlatform {
         context.getApplicationContext().startActivity(intent);
     }
 
-    private ArrayList<String> locateISOs() {
+    private ArrayList<String> locateGames() {
         ArrayList<String> output = new ArrayList<>();
         try {
             boolean enabled = false;

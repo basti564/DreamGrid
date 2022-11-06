@@ -29,9 +29,7 @@ public class AndroidPlatform extends AbstractPlatform {
 
         final File file = pkg2path(activity, app.packageName);
         if (file.exists()) {
-            if (AbstractPlatform.updateIcon(icon, file, app.packageName)) {
-                return;
-            }
+            AbstractPlatform.updateIcon(icon, file, app.packageName);
         }
     }
 

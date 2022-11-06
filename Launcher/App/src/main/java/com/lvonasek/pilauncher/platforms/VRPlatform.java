@@ -59,49 +59,53 @@ public class VRPlatform extends AbstractPlatform {
     private void downloadIcon(final Activity context, String pkg, String name, final Runnable callback) {
         final File file = pkg2path(context, pkg);
         new Thread(() -> {
-            String autogen = null;
-            if (ignoredIcons.contains(file.getName())) {
-                //ignored icon
-            } else if (downloadFile(ICONS1_URL + pkg + ".jpg", file)) {
-                context.runOnUiThread(callback);
-            } else if (downloadFile(ICONS2_URL + pkg.toLowerCase(Locale.US) + ".jpg", file)) {
-                context.runOnUiThread(callback);
-            } else {
-                int count = 0;
-                File info = new File(context.getApplicationInfo().dataDir, "applab.info");
-                if (downloadFile(ICONS2_URL + "applab.info", info)) {
-                    try {
-                        FileInputStream fis = new FileInputStream(info);
-                        Scanner sc = new Scanner(fis);
-                        while (sc.hasNext()) {
-                            String line = sc.nextLine();
-                            if (line.contains(name)) {
-                                Scanner lsc = new Scanner(line);
-                                autogen = lsc.next();
-                                lsc.close();
-                                count++;
+            try {
+                String autogen = null;
+                if (ignoredIcons.contains(file.getName())) {
+                    //ignored icon
+                } else if (downloadFile(ICONS1_URL + pkg + ".jpg", file)) {
+                    context.runOnUiThread(callback);
+                } else if (downloadFile(ICONS2_URL + pkg.toLowerCase(Locale.US) + ".jpg", file)) {
+                    context.runOnUiThread(callback);
+                } else {
+                    int count = 0;
+                    File info = new File(context.getApplicationInfo().dataDir, "applab.info");
+                    if (downloadFile(ICONS2_URL + "applab.info", info)) {
+                        try {
+                            FileInputStream fis = new FileInputStream(info);
+                            Scanner sc = new Scanner(fis);
+                            while (sc.hasNext()) {
+                                String line = sc.nextLine();
+                                if (line.contains(name)) {
+                                    Scanner lsc = new Scanner(line);
+                                    autogen = lsc.next();
+                                    lsc.close();
+                                    count++;
+                                }
                             }
+                            sc.close();
+                            fis.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        sc.close();
-                        fis.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
-                if (count == 0) {
-                    Log.d("Missing icon", file.getName());
-                    ignoredIcons.add(file.getName());
-                } else if (count == 1) {
-                    if (downloadFile(ICONS2_URL + autogen + ".jpg", file)) {
-                        context.runOnUiThread(callback);
-                    } else {
+                    if (count == 0) {
                         Log.d("Missing icon", file.getName());
                         ignoredIcons.add(file.getName());
+                    } else if (count == 1) {
+                        if (downloadFile(ICONS2_URL + autogen + ".jpg", file)) {
+                            context.runOnUiThread(callback);
+                        } else {
+                            Log.d("Missing icon", file.getName());
+                            ignoredIcons.add(file.getName());
+                        }
+                    } else if (count >= 2) {
+                        Log.d("Too many icons", file.getName());
+                        ignoredIcons.add(file.getName());
                     }
-                } else if (count >= 2) {
-                    Log.d("Too many icons", file.getName());
-                    ignoredIcons.add(file.getName());
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
     }
