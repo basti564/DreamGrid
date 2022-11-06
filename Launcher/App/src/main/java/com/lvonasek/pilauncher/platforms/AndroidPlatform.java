@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class AndroidPlatform extends AbstractPlatform {
@@ -25,6 +26,13 @@ public class AndroidPlatform extends AbstractPlatform {
     @Override
     public void loadIcon(Activity activity, ImageView icon, ApplicationInfo app, String name) {
         icon.setImageDrawable(app.loadIcon(activity.getPackageManager()));
+
+        final File file = pkg2path(activity, app.packageName);
+        if (file.exists()) {
+            if (AbstractPlatform.updateIcon(icon, file, app.packageName)) {
+                return;
+            }
+        }
     }
 
     @Override

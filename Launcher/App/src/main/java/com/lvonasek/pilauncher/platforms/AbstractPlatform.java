@@ -45,10 +45,6 @@ public abstract class AbstractPlatform {
         return new File(context.getApplicationInfo().dataDir, pkg + ".jpg");
     }
 
-    public static File pkg2pathPNG(Context context, String pkg) {
-        return new File(context.getApplicationInfo().dataDir, pkg + ".png");
-    }
-
     public static boolean updateIcon(ImageView icon, File file, String pkg) {
         Drawable drawable = Drawable.createFromPath(file.getAbsolutePath());
         if (drawable != null) {
@@ -103,6 +99,9 @@ public abstract class AbstractPlatform {
     protected static boolean isVirtualRealityApp(ApplicationInfo app) {
         if (app.metaData != null) {
             for (String key : app.metaData.keySet()) {
+                if (key.startsWith("com.oculus")) {
+                    return true;
+                }
                 if (key.startsWith("pvr.")) {
                     return true;
                 }

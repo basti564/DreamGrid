@@ -8,14 +8,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.widget.ImageView;
 
-import net.didion.loopy.iso9660.ISO9660FileEntry;
-import net.didion.loopy.iso9660.ISO9660FileSystem;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Scanner;
+
+import net.didion.loopy.iso9660.ISO9660FileEntry;
+import net.didion.loopy.iso9660.ISO9660FileSystem;
 
 public class PSPPlatform  extends AbstractPlatform {
 
@@ -47,7 +47,7 @@ public class PSPPlatform  extends AbstractPlatform {
             }
         }
 
-        final File file = pkg2pathPNG(activity, app.packageName);
+        final File file = pkg2path(activity, app.packageName);
         file.getParentFile().mkdirs();
         if (file.exists()) {
             if (AbstractPlatform.updateIcon(icon, file, app.packageName)) {
