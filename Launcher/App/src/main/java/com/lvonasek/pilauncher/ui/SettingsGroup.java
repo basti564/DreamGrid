@@ -1,4 +1,4 @@
-package com.lvonasek.pilauncher;
+package com.lvonasek.pilauncher.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.lvonasek.pilauncher.R;
 
 public class SettingsGroup extends LinearLayout {
 

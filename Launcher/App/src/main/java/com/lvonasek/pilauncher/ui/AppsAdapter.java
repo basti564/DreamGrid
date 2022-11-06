@@ -1,4 +1,4 @@
-package com.lvonasek.pilauncher;
+package com.lvonasek.pilauncher.ui;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -20,6 +20,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lvonasek.pilauncher.ImageUtils;
+import com.lvonasek.pilauncher.MainActivity;
+import com.lvonasek.pilauncher.R;
+import com.lvonasek.pilauncher.SettingsProvider;
+import com.lvonasek.pilauncher.platforms.AbstractPlatform;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +42,6 @@ public class AppsAdapter extends BaseAdapter
     private static Drawable mTempIcon;
     private static File mTempFile;
     private static ImageView mTempImage;
-    private static String mTempName;
     private static String mTempPackage;
     private static long mTempTimestamp;
 
@@ -133,23 +138,23 @@ public class AppsAdapter extends BaseAdapter
             });
         }
 
-        // set image based on selected text
-        final ImageView imageView = gridView.findViewById(R.id.imageLabel);
-        imageView.setImageDrawable(actApp.loadIcon(mContext.getPackageManager()));
-        IconDownloader.setIcon(mContext, imageView, actApp.packageName, name);
+        // set application icon
+        AbstractPlatform platform = AbstractPlatform.getPlatform(actApp);
+        ImageView imageView = gridView.findViewById(R.id.imageLabel);
+        platform.loadIcon(mContext, imageView, actApp, name);
 
         return gridView;
     }
 
     public void onImageSelected(String path) {
-        IconDownloader.clearCache();
+        AbstractPlatform.clearIconCache();
         if (path != null) {
             Bitmap bitmap = ImageUtils.getResizedBitmap(BitmapFactory.decodeFile(path), 450);
             ImageUtils.saveBitmap(bitmap, mTempFile);
             mTempImage.setImageBitmap(bitmap);
         } else {
             mTempImage.setImageDrawable(mTempIcon);
-            IconDownloader.setIcon(mContext, mTempImage, mTempPackage, mTempName);
+            AbstractPlatform.updateIcon(mTempImage, mTempFile, mTempPackage);
         }
         mContext.reloadUI();
     }
@@ -180,18 +185,17 @@ public class AppsAdapter extends BaseAdapter
 
         //set icon
         mTempImage = dialog.findViewById(R.id.app_icon);
-        mTempImage.setImageDrawable(actApp.loadIcon(mContext.getPackageManager()));
-        IconDownloader.setIcon(mContext, mTempImage, actApp.packageName, name);
         mTempImage.setOnClickListener(view1 -> {
-            mTempName = name;
             mTempIcon = actApp.loadIcon(pm);
             mTempPackage = actApp.packageName;
-            mTempFile = IconDownloader.pkg2path(mContext, actApp.packageName);
+            mTempFile = AbstractPlatform.pkg2path(mContext, actApp.packageName);
             if (mTempFile.exists()) {
                 mTempFile.delete();
             }
             ImageUtils.showImagePicker(mContext, MainActivity.PICK_ICON_CODE);
         });
+        AbstractPlatform platform = AbstractPlatform.getPlatform(actApp);
+        platform.loadIcon(mContext, mTempImage, actApp, name);
     }
 
     public String getSelectedPackage() {

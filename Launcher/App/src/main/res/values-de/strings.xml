@@ -12,6 +12,7 @@
     <string name="settings_apps_disable">Editieren deaktivieren</string>
     <string name="settings_device">Geräteeinstellungen</string>
     <string name="settings_look">Anpassen</string>
+    <string name="settings_platforms">Plattformen</string>
     <string name="settings_tweaks">System Tweaks</string>
     <string name="background_opacity">Hintergrund sichtbarkeit</string>
     <string name="icons_size">Icons Größe</string>

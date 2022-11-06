@@ -7,6 +7,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import com.lvonasek.pilauncher.platforms.AndroidPlatform;
+import com.lvonasek.pilauncher.platforms.PSPPlatform;
+import com.lvonasek.pilauncher.platforms.VRPlatform;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +27,9 @@ public class SettingsProvider
     public static final String KEY_CUSTOM_THEME = "KEY_CUSTOM_THEME";
     public static final String KEY_EDITMODE = "KEY_EDITMODE";
     public static final String KEY_MULTIWINDOW = "KEY_MULTIWINDOW";
+    public static final String KEY_PLATFORM_ANDROID = "KEY_PLATFORM_ANDROID";
+    public static final String KEY_PLATFORM_PSP = "KEY_PLATFORM_PSP";
+    public static final String KEY_PLATFORM_VR = "KEY_PLATFORM_VR";
 
     private final String KEY_APP_GROUPS = "prefAppGroups";
     private final String KEY_APP_LIST = "prefAppList";
@@ -67,8 +74,16 @@ public class SettingsProvider
 
         // Get list of installed apps
         Map<String, String> apps = getAppList();
-        PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> installedApplications = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        ArrayList<ApplicationInfo> installedApplications = new ArrayList<>();
+        if (isPlatformEnabled(KEY_PLATFORM_ANDROID)) {
+            installedApplications.addAll(new AndroidPlatform().getInstalledApps(context));
+        }
+        if (isPlatformEnabled(KEY_PLATFORM_PSP)) {
+            installedApplications.addAll(new PSPPlatform().getInstalledApps(context));
+        }
+        if (isPlatformEnabled(KEY_PLATFORM_VR)) {
+            installedApplications.addAll(new VRPlatform().getInstalledApps(context));
+        }
 
         // Put them into a map with package name as keyword for faster handling
         String ownPackageName = context.getApplicationContext().getPackageName();
@@ -103,6 +118,7 @@ public class SettingsProvider
         }
 
         // Create new list of apps
+        PackageManager pm = context.getPackageManager();
         ArrayList<ApplicationInfo> output = new ArrayList<>(appMap.values());
         output.sort((a, b) -> {
             String na = getAppDisplayName(context, a.packageName, a.loadLabel(pm)).toUpperCase();
@@ -261,7 +277,12 @@ public class SettingsProvider
         return output.toString();
     }
 
-    public boolean isPicoHeadset() {
-        return Build.MANUFACTURER.toUpperCase().startsWith("PICO");
+    public boolean isOculusHeadset() {
+        String vendor = Build.MANUFACTURER.toUpperCase();
+        return vendor.startsWith("META") || vendor.startsWith("OCULUS");
+    }
+
+    public boolean isPlatformEnabled(String key) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, true);
     }
 }

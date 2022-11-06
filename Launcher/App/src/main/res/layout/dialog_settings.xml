@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <com.lvonasek.pilauncher.SettingsGroup
+        <com.lvonasek.pilauncher.ui.SettingsGroup
             android:id="@+id/settings_look"
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -29,7 +29,7 @@
             app:icon="@drawable/ic_look"
             app:text="@string/settings_look"/>
 
-        <com.lvonasek.pilauncher.SettingsGroup
+        <com.lvonasek.pilauncher.ui.SettingsGroup
             android:id="@+id/settings_device"
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -37,7 +37,7 @@
             app:icon="@drawable/ic_device"
             app:text="@string/settings_device"/>
 
-        <com.lvonasek.pilauncher.SettingsGroup
+        <com.lvonasek.pilauncher.ui.SettingsGroup
             android:id="@+id/settings_apps"
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -45,7 +45,21 @@
             app:icon="@drawable/ic_editing_on"
             app:text="@string/settings_apps_enable"/>
 
-        <com.lvonasek.pilauncher.SettingsGroup
+        <com.lvonasek.pilauncher.ui.SettingsGroup
+            android:id="@+id/settings_platforms"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:tooltipText="@string/settings_platforms"
+            app:icon="@drawable/ic_platforms"
+            app:text="@string/settings_platforms"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <com.lvonasek.pilauncher.ui.SettingsGroup
             android:id="@+id/settings_tweaks"
             android:layout_width="120dp"
             android:layout_height="120dp"

@@ -1,5 +1,6 @@
 package com.lvonasek.pilauncher;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,6 +27,10 @@ import android.widget.SeekBar;
 
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
+import com.lvonasek.pilauncher.platforms.AbstractPlatform;
+import com.lvonasek.pilauncher.ui.AppsAdapter;
+import com.lvonasek.pilauncher.ui.GroupsAdapter;
+import com.lvonasek.pilauncher.ui.SettingsGroup;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -149,7 +155,18 @@ public class MainActivity extends Activity
     protected void onResume() {
         super.onResume();
         mFocus = true;
-        reloadUI();
+
+        String[] permissions = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        boolean read = checkSelfPermission(permissions[0]) == PackageManager.PERMISSION_GRANTED;
+        boolean write = checkSelfPermission(permissions[1]) == PackageManager.PERMISSION_GRANTED;
+        if (read && write) {
+            reloadUI();
+        } else {
+            requestPermissions(permissions, 0);
+        }
     }
 
     @Override
@@ -232,7 +249,7 @@ public class MainActivity extends Activity
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
-        if (!mSettings.isPicoHeadset()) {
+        if (mSettings.isOculusHeadset()) {
             lp.width = 660;
             lp.height = 400;
         }
@@ -265,6 +282,7 @@ public class MainActivity extends Activity
         });
 
         dialog.findViewById(R.id.settings_look).setOnClickListener(view -> showSettingsLook());
+        dialog.findViewById(R.id.settings_platforms).setOnClickListener(view -> showSettingsPlatforms());
         dialog.findViewById(R.id.settings_tweaks).setOnClickListener(view -> showSettingsTweaks());
         dialog.findViewById(R.id.settings_device).setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -272,7 +290,7 @@ public class MainActivity extends Activity
             intent.setPackage("com.android.settings");
             startActivity(intent);
         });
-        if (mSettings.isPicoHeadset()) {
+        if (!mSettings.isOculusHeadset()) {
             dialog.findViewById(R.id.settings_tweaks).setVisibility(View.GONE);
         }
     }
@@ -357,6 +375,38 @@ public class MainActivity extends Activity
         }
     }
 
+
+    private void showSettingsPlatforms() {
+        Dialog d = showPopup(R.layout.dialog_platforms);
+
+        CheckBox android = d.findViewById(R.id.checkbox_android);
+        android.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_ANDROID, true));
+        android.setOnCheckedChangeListener((compoundButton, value) -> {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(SettingsProvider.KEY_PLATFORM_ANDROID, value);
+            editor.commit();
+            reloadUI();
+        });
+
+        CheckBox psp = d.findViewById(R.id.checkbox_psp);
+        psp.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_PSP, true));
+        psp.setOnCheckedChangeListener((compoundButton, value) -> {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(SettingsProvider.KEY_PLATFORM_PSP, value);
+            editor.commit();
+            reloadUI();
+        });
+
+        CheckBox vr = d.findViewById(R.id.checkbox_vr);
+        vr.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_VR, true));
+        vr.setOnCheckedChangeListener((compoundButton, value) -> {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(SettingsProvider.KEY_PLATFORM_VR, value);
+            editor.commit();
+            reloadUI();
+        });
+    }
+
     private void showSettingsTweaks() {
         Dialog d = showPopup(R.layout.dialog_tweaks);
 
@@ -401,24 +451,10 @@ public class MainActivity extends Activity
             }
         }).start();
 
-        //detect if it is a VR app
-        boolean vr = false;
-        if (app.metaData != null) {
-            for (String key : app.metaData.keySet()) {
-                if (key.contains("vr.application.mode")) {
-                    vr = true;
-                    break;
-                }
-            }
-        }
-
-        //open app action
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(app.packageName);
-        if (vr || mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false)) {
-            getApplicationContext().startActivity(launchIntent);
-        } else {
-            startActivity(launchIntent);
-        }
+        //open the app
+        AbstractPlatform platform = AbstractPlatform.getPlatform(app);
+        boolean multiview = mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false);
+        platform.runApp(this, app, multiview);
     }
 
     public void openAppDetails(String pkg) {

@@ -1,4 +1,4 @@
-package com.lvonasek.pilauncher;
+package com.lvonasek.pilauncher.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+
+import com.lvonasek.pilauncher.R;
 
 public class TextView extends android.widget.TextView {
 
