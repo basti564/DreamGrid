@@ -28,6 +28,10 @@ public class PSPPlatform  extends AbstractPlatform {
     @Override
     public ArrayList<ApplicationInfo> getInstalledApps(Context context) {
         ArrayList<ApplicationInfo> output = new ArrayList<>();
+        if (!isSupported(context)) {
+            return output;
+        }
+
         for (String path : locateGames()) {
             ApplicationInfo app = new ApplicationInfo();
             app.name = path.substring(path.lastIndexOf('/') + 1);
@@ -35,6 +39,16 @@ public class PSPPlatform  extends AbstractPlatform {
             output.add(app);
         }
         return output;
+    }
+
+    @Override
+    public boolean isSupported(Context context) {
+        for (ApplicationInfo app : new VRPlatform().getInstalledApps(context)) {
+            if (app.packageName.startsWith(EMULATOR_PACKAGE)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

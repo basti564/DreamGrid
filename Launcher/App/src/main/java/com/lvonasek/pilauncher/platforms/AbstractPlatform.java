@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.widget.ImageView;
 
 import java.io.DataInputStream;
@@ -23,6 +24,7 @@ public abstract class AbstractPlatform {
     protected static final HashSet<String> ignoredIcons = new HashSet<>();
 
     public abstract ArrayList<ApplicationInfo> getInstalledApps(Context context);
+    public abstract boolean isSupported(Context context);
     public abstract void loadIcon(Activity activity, ImageView icon, ApplicationInfo app, String name);
     public abstract void runApp(Context context, ApplicationInfo app, boolean multiwindow);
 
@@ -98,6 +100,16 @@ public abstract class AbstractPlatform {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static boolean isOculusHeadset() {
+        String vendor = Build.MANUFACTURER.toUpperCase();
+        return vendor.startsWith("META") || vendor.startsWith("OCULUS");
+    }
+
+    public static boolean isPicoHeadset() {
+        String vendor = Build.MANUFACTURER.toUpperCase();
+        return vendor.startsWith("PICO");
     }
 
     protected static boolean isVirtualRealityApp(ApplicationInfo app) {

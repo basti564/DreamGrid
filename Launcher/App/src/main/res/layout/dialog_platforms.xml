@@ -16,6 +16,7 @@
         android:text="@string/settings_platforms"/>
 
     <LinearLayout
+        android:id="@+id/layout_android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -44,6 +45,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_psp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -73,6 +75,7 @@
 
 
     <LinearLayout
+        android:id="@+id/layout_vr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"

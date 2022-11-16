@@ -28,6 +28,9 @@ import android.widget.SeekBar;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.lvonasek.pilauncher.platforms.AbstractPlatform;
+import com.lvonasek.pilauncher.platforms.AndroidPlatform;
+import com.lvonasek.pilauncher.platforms.PSPPlatform;
+import com.lvonasek.pilauncher.platforms.VRPlatform;
 import com.lvonasek.pilauncher.ui.AppsAdapter;
 import com.lvonasek.pilauncher.ui.GroupsAdapter;
 import com.lvonasek.pilauncher.ui.SettingsGroup;
@@ -249,7 +252,7 @@ public class MainActivity extends Activity
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
-        if (mSettings.isOculusHeadset()) {
+        if (AbstractPlatform.isOculusHeadset()) {
             lp.width = 660;
             lp.height = 400;
         }
@@ -290,7 +293,7 @@ public class MainActivity extends Activity
             intent.setPackage("com.android.settings");
             startActivity(intent);
         });
-        if (!mSettings.isOculusHeadset()) {
+        if (!AbstractPlatform.isOculusHeadset()) {
             dialog.findViewById(R.id.settings_tweaks).setVisibility(View.GONE);
         }
     }
@@ -387,6 +390,7 @@ public class MainActivity extends Activity
             editor.commit();
             reloadUI();
         });
+        d.findViewById(R.id.layout_android).setVisibility(new AndroidPlatform().isSupported(this) ? View.VISIBLE : View.GONE);
 
         CheckBox psp = d.findViewById(R.id.checkbox_psp);
         psp.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_PSP, true));
@@ -396,6 +400,7 @@ public class MainActivity extends Activity
             editor.commit();
             reloadUI();
         });
+        d.findViewById(R.id.layout_psp).setVisibility(new PSPPlatform().isSupported(this) ? View.VISIBLE : View.GONE);
 
         CheckBox vr = d.findViewById(R.id.checkbox_vr);
         vr.setChecked(mPreferences.getBoolean(SettingsProvider.KEY_PLATFORM_VR, true));
@@ -405,6 +410,7 @@ public class MainActivity extends Activity
             editor.commit();
             reloadUI();
         });
+        d.findViewById(R.id.layout_vr).setVisibility(new VRPlatform().isSupported(this) ? View.VISIBLE : View.GONE);
     }
 
     private void showSettingsTweaks() {

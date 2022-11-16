@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.lvonasek.pilauncher.platforms.AndroidPlatform;
@@ -109,6 +108,8 @@ public class SettingsProvider
                 if (pkg.startsWith("com.oculus.environment")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.helpcenter")) isSystemApp = true;
                 if (pkg.startsWith("com.oculus.systemutilities")) isSystemApp = true;
+                if (pkg.startsWith("com.pico")) isSystemApp = true;
+                if (pkg.startsWith("com.pvr")) isSystemApp = true;
                 if (!isSystemApp && !isEnvironment) {
                     if(!installedApplication.packageName.equals(ownPackageName)) {
                         appMap.put(installedApplication.packageName, installedApplication);
@@ -275,11 +276,6 @@ public class SettingsProvider
             if ((c >= '0') && (c <= '9')) output.append(c);
         }
         return output.toString();
-    }
-
-    public boolean isOculusHeadset() {
-        String vendor = Build.MANUFACTURER.toUpperCase();
-        return vendor.startsWith("META") || vendor.startsWith("OCULUS");
     }
 
     public boolean isPlatformEnabled(String key) {

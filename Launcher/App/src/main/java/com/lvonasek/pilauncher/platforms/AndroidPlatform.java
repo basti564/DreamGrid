@@ -24,6 +24,11 @@ public class AndroidPlatform extends AbstractPlatform {
     }
 
     @Override
+    public boolean isSupported(Context context) {
+        return true;
+    }
+
+    @Override
     public void loadIcon(Activity activity, ImageView icon, ApplicationInfo app, String name) {
         icon.setImageDrawable(app.loadIcon(activity.getPackageManager()));
 

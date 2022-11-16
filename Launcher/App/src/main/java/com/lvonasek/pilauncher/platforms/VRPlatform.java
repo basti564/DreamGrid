@@ -21,14 +21,23 @@ public class VRPlatform extends AbstractPlatform {
 
     @Override
     public ArrayList<ApplicationInfo> getInstalledApps(Context context) {
-        PackageManager pm = context.getPackageManager();
         ArrayList<ApplicationInfo> output = new ArrayList<>();
+        if (!isSupported(context)) {
+            return output;
+        }
+
+        PackageManager pm = context.getPackageManager();
         for (ApplicationInfo app : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
             if (isVirtualRealityApp(app)) {
                 output.add(app);
             }
         }
         return output;
+    }
+
+    @Override
+    public boolean isSupported(Context context) {
+        return isOculusHeadset() || isPicoHeadset();
     }
 
     @Override
