@@ -102,6 +102,11 @@ public abstract class AbstractPlatform {
         }
     }
 
+    public static boolean isMagicLeapHeadset() {
+        String vendor = Build.MANUFACTURER.toUpperCase();
+        return vendor.startsWith("MAGIC LEAP");
+    }
+
     public static boolean isOculusHeadset() {
         String vendor = Build.MANUFACTURER.toUpperCase();
         return vendor.startsWith("META") || vendor.startsWith("OCULUS");
@@ -115,6 +120,9 @@ public abstract class AbstractPlatform {
     protected static boolean isVirtualRealityApp(ApplicationInfo app) {
         if (app.metaData != null) {
             for (String key : app.metaData.keySet()) {
+                if (key.startsWith("notch.config")) {
+                    return true;
+                }
                 if (key.startsWith("com.oculus")) {
                     return true;
                 }

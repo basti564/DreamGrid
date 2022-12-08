@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -87,6 +88,9 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (AbstractPlatform.isMagicLeapHeadset()) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         mSettings = SettingsProvider.getInstance(this);
         instance = this;
@@ -145,7 +149,11 @@ public class MainActivity extends Activity
 
     @Override
     public void onBackPressed() {
-        showSettingsMain();
+        if (AbstractPlatform.isMagicLeapHeadset()) {
+            super.onBackPressed();
+        } else {
+            showSettingsMain();
+        }
     }
 
     @Override
@@ -252,7 +260,7 @@ public class MainActivity extends Activity
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
-        if (AbstractPlatform.isOculusHeadset()) {
+        if (AbstractPlatform.isMagicLeapHeadset() || AbstractPlatform.isOculusHeadset()) {
             lp.width = 660;
             lp.height = 400;
         }
@@ -293,6 +301,9 @@ public class MainActivity extends Activity
             intent.setPackage("com.android.settings");
             startActivity(intent);
         });
+        if (AbstractPlatform.isMagicLeapHeadset()) {
+            dialog.findViewById(R.id.settings_device).setVisibility(View.GONE);
+        }
         if (!AbstractPlatform.isOculusHeadset()) {
             dialog.findViewById(R.id.settings_tweaks).setVisibility(View.GONE);
         }
