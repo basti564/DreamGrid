@@ -20,12 +20,7 @@
 
     <string name="service_app_shortcut">Atalho do aplicativo</string>
     <string name="service_explore_app">Aplicativo Explorar</string>
-    <string name="service_multiwindow">Múltiplas Janelas</string>
     <string name="service_os_updater">Atualizador SO</string>
-
-    <string name="service_enable">Habilitar</string>
-    <string name="service_disable">Desabilitar</string>
-    <string name="service_multiwindow_desc">Os aplicativos 2D são sempre abertos no slot de central. Ao habilitar múltiplas janelas no launcher, os aplicativos abertos serão abertos em uma nova janela. Deseja habilitar ou desabilitar este recurso?</string>
 
     <string name="explore_accessibility_event_name">[Explorar]</string>
 </resources>

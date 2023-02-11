@@ -20,12 +20,7 @@
 
     <string name="service_app_shortcut">App shortcut</string>
     <string name="service_explore_app">Explore app</string>
-    <string name="service_multiwindow">Multiwindow</string>
     <string name="service_os_updater">OS updater</string>
-
-    <string name="service_enable">Enable</string>
-    <string name="service_disable">Disable</string>
-    <string name="service_multiwindow_desc">2D apps are always opened in the middle multiwindow slot. By enabling multiwindow in the launcher the opened apps will be opened in a new window. Do you want to enable or disable this feature?</string>
 
     <string name="explore_accessibility_event_name">[Explore]</string>
 </resources>

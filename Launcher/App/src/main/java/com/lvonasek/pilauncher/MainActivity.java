@@ -433,22 +433,6 @@ public class MainActivity extends Activity
         });
         d.findViewById(R.id.service_explore_app).setOnClickListener(view -> openAppDetails("com.oculus.explore"));
         d.findViewById(R.id.service_os_updater).setOnClickListener(view -> openAppDetails("com.oculus.updater"));
-
-        d.findViewById(R.id.service_multiwindow).setOnClickListener(view -> {
-            Dialog dialog = showPopup(R.layout.dialog_multiwindow);
-            dialog.findViewById(R.id.disable).setOnClickListener(view12 -> {
-                SharedPreferences.Editor e = mPreferences.edit();
-                e.putBoolean(SettingsProvider.KEY_MULTIWINDOW, false);
-                e.commit();
-                dialog.dismiss();
-            });
-            dialog.findViewById(R.id.enable).setOnClickListener(view1 -> {
-                SharedPreferences.Editor e = mPreferences.edit();
-                e.putBoolean(SettingsProvider.KEY_MULTIWINDOW, true);
-                e.commit();
-                dialog.dismiss();
-            });
-        });
     }
 
     private int getPixelFromDip(int dip) {
@@ -470,8 +454,7 @@ public class MainActivity extends Activity
 
         //open the app
         AbstractPlatform platform = AbstractPlatform.getPlatform(app);
-        boolean multiview = mPreferences.getBoolean(SettingsProvider.KEY_MULTIWINDOW, false);
-        platform.runApp(this, app, multiview);
+        platform.runApp(this, app, false);
     }
 
     public void openAppDetails(String pkg) {

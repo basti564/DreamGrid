@@ -20,12 +20,7 @@
 
     <string name="service_app_shortcut">Skrót aplikacji</string>
     <string name="service_explore_app">Aplikacja Eksploruj</string>
-    <string name="service_multiwindow">Tryb wielu okien</string>
     <string name="service_os_updater">Aktualizator systemu</string>
-
-    <string name="service_enable">Włącz</string>
-    <string name="service_disable">Wyłącz</string>
-    <string name="service_multiwindow_desc">Aplikacje 2D są zawsze otwierane na środkowej pozycji w trybie wielu okien. Włączenie trybu wielu okien spowoduje, że aplikacje będą otwierane w nowym oknie. Czy chcesz włączyć lub wyłączyć tę funkcję?</string>
 
     <string name="explore_accessibility_event_name">[Eksploruj]</string>
 </resources>
